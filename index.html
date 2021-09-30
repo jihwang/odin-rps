@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    const ROCK = "rock";
+    const PAPER = "paper";
+    const SCISSORS = "scissors";
+
+    game();
+
+    function game() {
+      let playScore = 0;
+      for (let i = 0; i != 5; i++) {
+        let computerChoice = computerPlay();
+        let playerChoice = "";
+        do {
+          playerChoice = prompt("Enter Choice", "").toLowerCase();
+        } while (!isValidInput);
+        const result = playRound(playerChoice, computerChoice);
+        console.log(getResultMessage(result, playerChoice, computerChoice));
+        playScore += result;
+      }
+    }
+
+    function isValidInput(input) {
+      input.toLowerCase();
+      return input == ROCK || input == PAPER || input == SCISSORS;
+    }
+
+    function playRound(playerChoice, computerChoice) {
+      // Sanitize Input
+      playerChoice.toLowerCase();
+      computerChoice.toLowerCase();
+
+      // Tie Case
+      if (playerChoice == computerChoice) {
+        return 0;
+      }
+
+      // Win Cases
+      if (isPlayerWinner(playerChoice, computerChoice)) {
+        return 1;
+      }
+      // Lose Case
+      return -1;
+    }
+
+    // Returns a random choice between rock paper or scissors
+    function computerPlay() {
+      let random_number = Math.floor(Math.random() * 2);
+      switch (random_number) {
+        case 0: return ROCK;
+        case 1: return PAPER;
+        case 2: return SCISSORS;
+        default: return "ERROR";
+      }
+    }
+
+    // Returns string "Prefix winner beats loser"
+    function getResultMessage(result, playerChoice, computerChoice) {
+      playerChoice = getFormmatedChoice(playerChoice)
+      computerChoice = getFormmatedChoice(computerChoice)
+
+      switch (result) {
+        case -1: return "You Lose! " + computerChoice + "beats " + playerChoice;
+        case 0: return "You Tie!";
+        case 1: return "You Win! " + playerChoice + "beats " + computerChoice;
+        default: "ERROR: result outside of bounds";
+      }
+    }
+
+    // Returns first letter uppercase, and the reset lowercase
+    function getFormmatedChoice(choice) {
+      return choice.charAt(0).toUpperCase() + choice.slice(1).toLowerCase();
+    }
+
+    // Returns true if player chhoic wins
+    function isPlayerWinner(playerChoice, computerChoice) {
+      return (playerChoice == ROCK && computerChoice == SCISSORS) ||
+        (playerChoice == SCISSORS && computerChoice == PAPER) ||
+        (playerChoice == PAPER && computerChoice == ROCK);
+    }
+
+  </script>
+</head>
+
+<body>
+  <h1>Rock Paper Scissors</h1>
+
+</body>
+
+</html>
